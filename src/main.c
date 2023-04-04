@@ -26,6 +26,9 @@
 #include <srldrvce.h>
 #include <tice.h>
 
+/* Packet structure */
+#define PACKET_UNAME    "\x01"
+#define PACKET_KEY      "\x02"
 
 /* Include the converted graphics file */
 #include "gfx/gfx.h"
@@ -399,14 +402,14 @@ void ConnectSerial()
     srl_busy = true;
     char write_data_buffer[18];
 
-    write_data_buffer[0] = "0x00";
+    write_data_buffer[0] = PACKET_UNAME;
 
     keyfile = ti_Open("NetKey", "r");
 
     if (keyfile)
     {
         /* Read 13 bytes starting from the second byte */
-        if (ti_Read(&write_data_buffer[5], 13, 1, keyfile) == 1)
+        if (ti_Read(&write_data_buffer[1], 13, 1, keyfile) == 1)
         {
             ti_Close(keyfile);
 
